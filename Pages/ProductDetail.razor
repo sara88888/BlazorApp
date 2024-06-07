@@ -1,0 +1,36 @@
+﻿@page "/products/productdetail/{ProductId:int}"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+@if (IsFound)
+{
+    <h2 class="mx-5 mt-5 mb-4 px-5">Product Nr.@Detail.ID &nbsp;Details</h2>
+    <div class="detailframe d-flex flex-column justify-content-around mx-5 px-5 py-1">
+        <div><img src="@Detail.ImgPath" width="300px" height="290px"></div>
+        <div class="d-inline-flex">
+            <h6><strong>@Detail.Name</strong></h6>
+            <span class="ms-auto">@Detail.Price</span>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+
+    public ProductList Source { get; set; } = new();
+
+    public Product Detail { get; set; }
+
+    public bool IsFound { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Detail = Source.Products.FirstOrDefault(x=>x.ID==ProductId);
+        if (Detail != null)
+            IsFound = true;
+        else NavigationManager.NavigateTo("/products/true");
+
+    }
+}

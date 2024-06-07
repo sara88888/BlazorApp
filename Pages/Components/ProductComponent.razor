@@ -1,0 +1,10 @@
+﻿<div class="productframe d-flex flex-column justify-content-between m-1">
+    <div class="p-1"><img src="@Product.ImgPath" width="180px" height="160px"> </div>
+    <div class="p-1 text-center"><h6>@Product.Name</h6> </div>
+    <div class="px-1 pb-1 ms-auto"><h6>@Product.Price.ToString() &nbsp;&#8364;</h6> </div>
+</div>
+
+@code {
+    [Parameter]
+    public Product Product { get; set; }
+}

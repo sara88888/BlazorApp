@@ -1,0 +1,88 @@
+﻿@* Could be used as both as a component, as currently, or as a razor page (called from a NavMenu)*@
+@page "/products"
+@* To be called with an optional parameter *@
+@page "/products/{IsDisplayMode:bool}"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+@if (IsLoading)
+{
+    <div class="loading"><i class="fa-solid fa-2x fa-arrow-rotate-right"></i><span class="ms-5">...getting everything ready...</span></div>
+}
+else
+{
+    @if (IsDisplayMode)
+    {
+        <div class="mx-4 d-flex flex-row flex-wrap align-items-center justify-content-around">
+            @foreach (var prod in ProductDisplay)
+            {
+                <ProductComponent Product="@prod"/>
+            }
+        </div>   
+    }
+    else
+    {
+        <h3>Products</h3>
+        <table class="table table-responsive table-striped mb-1" style="cursor:pointer">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prod in ProductPage)
+                {
+                <tr @onclick="@(()=>NavigationManager.NavigateTo($"/products/productdetail/{prod.ID}"))">
+                    <td>@prod.ID</td>
+                    <td>@prod.Name</td>
+                    <td>@prod.Price</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <PaginationComponent Pagination="Pagination" Reload="LoadData"/>
+    }
+}
+
+@code {
+    public bool IsLoading { get; set; } = true;
+    public bool IsDisplayMode { get; set; } = false;
+
+    public ProductList Source { get; set; } = new();
+    public List<Product>? ProductList { get; set; } = new();
+    public List<Product>? ProductPage { get; set; } = new();
+    public List<Product>? ProductDisplay { get; set; } = new();
+
+    public Pagination Pagination { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //loading management would be necessary with a database connection
+        await Task.Delay(100);
+        await LoadData();
+        IsLoading = false;
+    }
+
+    public async Task LoadData(int? currentPage=null)
+    {
+        ProductDisplay = Source.Products.Take(4).ToList();
+        ProductList = Source.Products;
+        Pagination.TotalItems = ProductList.Count;
+
+        if (currentPage != null)
+        {
+            Pagination.CurrentPage = Convert.ToInt16(currentPage);
+        }
+        else
+        {
+            Pagination.CurrentPage = 1;
+        }
+
+        ProductPage = ProductList.Skip(Pagination.StartRow).Take(Pagination.ItemsPerPage).ToList();
+
+        await InvokeAsync(StateHasChanged);
+    }
+}
