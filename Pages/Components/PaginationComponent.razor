@@ -1,18 +1,18 @@
 ﻿@if (Pagination != null)
 {
-    <div class="d-flex justify-content-between">
+    <div class="d-flex fixed-bottom m-1 justify-content-between">
         <div></div>
         <div>
             @if (Pagination.PageCount > 1)
             {
-                <button class="btn btn-facebook text-bold" @onclick="@(()=>Apply(1))">1</button>
+                <button class="btn btn-outline-dark text-bold" @onclick="@(()=>Apply(1))">1</button>
                 <label>...</label>
-                <button class="btn btn-facebook text-bold active" @onclick="@(()=>Apply(Pagination.
+                <button class="btn btn-outline-dark text-bold" @onclick="@(()=>Apply(Pagination.
                     PreviousPage))"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
-                <button class="btn btn-facebook text-bold active">@Pagination.CurrentPage</button>
-                <button class="btn btn-facebook text-bold" @onclick="@(()=>Apply(Pagination.NextPage))"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                <button class="btn btn-outline-dark text-bold active">@Pagination.CurrentPage</button>
+                <button class="btn btn-outline-dark text-bold" @onclick="@(()=>Apply(Pagination.NextPage))"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
                 <label>...</label>
-                <button class="btn btn-facebook text-bold" @onclick="@(()=>Apply(Pagination.PageCount))">Total: &nbsp; @Pagination.PageCount</button>
+                <button class="btn btn-outline-dark text-bold" @onclick="@(()=>Apply(Pagination.PageCount))">@Pagination.PageCount</button>
             }
         </div>
         <div>

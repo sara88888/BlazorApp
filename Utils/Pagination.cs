@@ -41,7 +41,7 @@
             get {
                 if (CurrentPage > 1)
                     return CurrentPage - 1;
-                else return 0;
+                else return CurrentPage;
             }
         }
 
@@ -52,7 +52,7 @@
             {
                 if (CurrentPage < PageCount)
                     return CurrentPage + 1;
-                else return 0;
+                else return CurrentPage;
             }
         }
     }
